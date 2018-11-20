@@ -48,7 +48,7 @@ void ContourTracker::update()
 
 				// Euclidean distance in RGB space.
 				float distance = sqrt(r*r + g*g + b*b);
-				if (distance > delta) {
+				if (distance < delta) {
 					pixels.setColor(i, j, ofColor::white);
 				} else {
 					pixels.setColor(i, j, ofColor::black);
