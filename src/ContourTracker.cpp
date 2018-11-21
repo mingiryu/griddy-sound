@@ -19,15 +19,15 @@ void ContourTracker::setup(int width_, int height_)
 	gui.setPosition(width * scale, height * 2); // Draw Gui at the bottom corner
 
 	// Color tracking parameter
-	targetColor = ofColor(80, 80 ,80);
-	gui.add(delta.set("Color Delta", 80, 0, 255));
+	targetColor = ofColor(87, 71, 65);
+	gui.add(delta.set("Color Delta", 50, 0, 255));
 
 	// ContourFinder Parameter
 	gui.add(threshold.set("Contour Threshold", 80, 0, 255));
-	gui.add(minArea.set("Minimum Area", 1000, 0, width*height));
-	gui.add(maxArea.set("Maximum Area", 10000, 0, width*height));
+	gui.add(minArea.set("Minimum Area", 2000, 0, width*height));
+	gui.add(maxArea.set("Maximum Area", 20000, 0, width*height));
 	gui.add(maxContours.set("Maximum Contours", 10, 0, 100));
-	gui.add(bApproximateContour.set("Approximate Contour", false));
+	gui.add(bApproximateContour.set("Approximate Contour", true));
 	bLearnBackground = true;
 }
 
@@ -49,9 +49,9 @@ void ContourTracker::update()
 				// Euclidean distance in RGB space.
 				float distance = sqrt(r*r + g*g + b*b);
 				if (distance < delta) {
-					pixels.setColor(i, j, ofColor::white);
-				} else {
 					pixels.setColor(i, j, ofColor::black);
+				} else {
+					pixels.setColor(i, j, ofColor::white);
 				}
 			}
 		}
@@ -70,8 +70,8 @@ void ContourTracker::update()
 			grayBgFloat = grayBgImage;
 
 			// Adaptive background
-			grayBgFloat *= 0.99;
-    		grayImageFloat *= 0.00;
+			grayBgFloat *= 0.999;
+    		grayImageFloat *= 0.001;
 			grayBgFloat += grayImageFloat;
 
 			// Convert back to ofxGrayscaleImage
