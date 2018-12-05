@@ -15,12 +15,21 @@ class GridSoundPlayer
 		 * Plays the sound based on (x,y) coordinate.
 		 */
 		void playGrid(int x, int y);
+		/**
+		 * Replacement of ofSoundStopAll().
+		 * ofSoundStopAll() is supported for windows/macos.
+		 */
+		void soundStopAll();
+
+		void hold();
+		void releaseAll();
 
 	private:
 		vector<ofSoundPlayer> grid; // row by column matrix of sound, use indexof() to access.
 		int width, height, scale;
 		int row, col;
-
+		
+		void loadSound(const std::string& file);
 		/**
 		 * Loads up a single audio file with gradient speed and pan.
 		 */
@@ -29,9 +38,5 @@ class GridSoundPlayer
 		 * Reduces (x,y) coordinates to (idx).
 		 */
 		int indexof(int x, int y); 
-		/**
-		 * Replacement of ofSoundStopAll().
-		 * ofSoundStopAll() is supported for windows/macos.
-		 */
-		void soundStopAll();
+
 };

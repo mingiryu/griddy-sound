@@ -33,10 +33,9 @@ void ContourTracker::setup(int width_, int height_)
 
 void ContourTracker::update()
 {
-	bool bNewFrame = false;
 	vidGrabber.update();
-	bNewFrame = vidGrabber.isFrameNew();
-	if (bNewFrame)
+	
+	if (vidGrabber.isFrameNew())
 	{
 		ofPixels pixels = vidGrabber.getPixels();
 		for (int i = 0; i < width; i++) {
@@ -58,6 +57,8 @@ void ContourTracker::update()
 		colorImage.setFromPixels(pixels);
 		grayImage = colorImage; // Convert to grayscale for faster processing
 		grayImage.mirror(false, true);
+		grayImage.dilate();
+		grayImage.blur(7);
 
 		if (bLearnBackground == true)
 		{
@@ -70,8 +71,8 @@ void ContourTracker::update()
 			grayBgFloat = grayBgImage;
 
 			// Adaptive background
-			grayBgFloat *= 0.999;
-    		grayImageFloat *= 0.001;
+			grayBgFloat *= 0.9;
+    		grayImageFloat *= 0.1;
 			grayBgFloat += grayImageFloat;
 
 			// Convert back to ofxGrayscaleImage
@@ -90,12 +91,6 @@ void ContourTracker::update()
 			int x = blob.centroid.x * scale;
 			int y = blob.centroid.y * scale;
 			points.push_back(ofVec2f(x,y));
-
-			for (auto p : blob.pts) {
-				p.x *= scale;
-				p.y *= scale;
-				points.push_back(p);
-			}
 		}
 	}
 }
@@ -125,8 +120,10 @@ vector<ofVec2f> & ContourTracker::getPoints()
 
 void ContourTracker::mousePressed(int x, int y, int button)
 {
-	ofPixels pixels = vidGrabber.getPixels();
-	targetColor = pixels.getColor(x - width*scale, y);
+	if (button == 2) { // Right click
+		ofPixels pixels = vidGrabber.getPixels();
+		targetColor = pixels.getColor(x - width*scale, y);
+	}
 }
 
 	

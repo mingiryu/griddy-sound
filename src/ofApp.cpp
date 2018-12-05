@@ -16,13 +16,14 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-	gridSoundPlayer.drawGrid();
 	contourTracker.draw();
+	gridSoundPlayer.drawGrid();
 
-	vector<ofVec2f> & points = contourTracker.getPoints();
-	for (auto p : points) {
+	vector<ofVec2f> &points = contourTracker.getPoints();
+	for (auto p : points)
+	{
 		ofSetColor(255);
-		ofDrawCircle(p.x, p.y, 5);
+		ofDrawCircle(p.x, p.y, 10);
 		gridSoundPlayer.playGrid(p.x, p.y);
 	}
 }
@@ -32,3 +33,15 @@ void ofApp::mousePressed(int x, int y, int button)
 	contourTracker.mousePressed(x, y, button);
 }
 
+void ofApp::keyPressed(int key)
+{
+	if (key == 's') {
+		gridSoundPlayer.soundStopAll();
+	}
+	if (key == 'h') {
+		gridSoundPlayer.hold();
+	}
+	if (key == 'r') {
+		gridSoundPlayer.releaseAll();
+	}
+}
