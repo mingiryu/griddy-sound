@@ -1,4 +1,4 @@
-# griddy-sound-with-opencv
+# griddy-sound
 Uses ofxOpenCv and ofxGui addons
 
 Make sure to run install_codecs.sh for SoundPlayer
